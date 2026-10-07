@@ -8,7 +8,7 @@ import { track } from './lib/metrics'
 type Screen = 'home' | 'results' | 'clinic' | 'coverage' | 'privacy' | 'terms'
 const INSURANCE: Insurance[] = ['medicaid', 'chip', 'marketplace', 'medicare', 'uninsured', 'unsure']
 const REPORT_EMAIL = import.meta.env.VITE_REPORT_EMAIL as string | undefined
-const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL as string | undefined
+const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) || 'abdullahmfara.08@gmail.com'
 const pageFromHash = (): Screen | null => (location.hash === '#privacy' ? 'privacy' : location.hash === '#terms' ? 'terms' : null)
 
 function stored<T extends string>(key: string, fallback: T): T {

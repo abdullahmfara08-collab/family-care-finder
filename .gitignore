@@ -26,3 +26,10 @@ dist-ssr
 # Real data inputs/outputs (regenerate with scripts/build-clinics.mjs)
 hrsa-source/
 public/data/clinics/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example

@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Real data inputs/outputs (regenerate with scripts/build-clinics.mjs)
+hrsa-source/
+public/data/clinics/

@@ -46,7 +46,10 @@ export default function App() {
     document.documentElement.lang = lang
     store('lang', lang)
   }, [lang])
-  useEffect(() => window.scrollTo(0, 0), [screen])
+  useEffect(() => {
+    // Braces matter: newer browsers return a Promise from scrollTo, which React would call as a cleanup.
+    window.scrollTo(0, 0)
+  }, [screen])
   useEffect(() => {
     const onHash = () => setScreen(pageFromHash() ?? 'home')
     window.addEventListener('hashchange', onHash)

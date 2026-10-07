@@ -48,7 +48,8 @@ const columns = {
   lon: ['Geocoding Artifact Address Primary X Coordinate'],
   lat: ['Geocoding Artifact Address Primary Y Coordinate'],
   status: ['Site Status Description'],
-  type: ['Health Center Type Description', 'Health Center Type'],
+  type: ['Health Center Type'],
+  siteType: ['Health Center Type Description'],
   hours: ['Operating Hours per Week'],
 }
 const index = {}
@@ -69,6 +70,8 @@ for (const row of rows) {
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue
   const status = get(row, 'status')
   if (status && !/^active/i.test(status)) continue
+  // Administrative-only offices do not see patients.
+  if (/^administrative$/i.test(get(row, 'siteType'))) continue
   const clinic = {
     id: `hrsa-${count}`,
     name: get(row, 'name'),

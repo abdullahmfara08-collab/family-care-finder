@@ -33,10 +33,12 @@ let requests = 0
 async function getBundle(url) {
   const file = new URL(createHash('sha1').update(today + url).digest('hex') + '.json', cacheDir)
   if (existsSync(file)) return JSON.parse(readFileSync(file, 'utf8'))
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    await sleep(PAUSE_MS * attempt)
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    await sleep(PAUSE_MS * attempt ** 2)
     requests++
-    const res = await fetch(url, { headers: { Accept: 'application/fhir+json' } })
+    // Dropped connections ("fetch failed") are retried like server errors.
+    const res = await fetch(url, { headers: { Accept: 'application/fhir+json' } }).catch(() => null)
+    if (!res) continue
     if (res.ok) {
       const body = await res.json()
       writeFileSync(file, JSON.stringify(body))

@@ -3,5 +3,5 @@
   "name": "family-care-finder",
   "compatibility_date": "2026-10-06",
   "observability": { "enabled": true },
-  "assets": { "directory": "./dist", "not_found_handling": "single-page-application" }
+  "assets": { "directory": "./dist", "not_found_handling": "single-page-application", "html_handling": "none" }
 }

@@ -50,6 +50,8 @@ const columns = {
   status: ['Site Status Description'],
   type: ['Health Center Type'],
   siteType: ['Health Center Type Description'],
+  setting: ['Health Center Service Delivery Site Location Setting Description'],
+  locationType: ['Health Center Location Type Description'],
   hours: ['Operating Hours per Week'],
 }
 const index = {}
@@ -63,6 +65,14 @@ if (missing.length) {
 }
 const get = (row, key) => (index[key] >= 0 ? (row[index[key]] ?? '').trim() : '')
 
+// Settings that only serve a closed group (students, residents, inmates),
+// so a family looking for care cannot walk in.
+const CLOSED_SETTINGS = /^(school|nursing home|domestic violence|correctional facility|transitional care in carceral setting)$/i
+// Some school and student-only sites are not tagged as such, but their name says so.
+const CLOSED_NAMES = /\b(schools?|elementary|sbhc|student health)\b/i
+const STREET_NAMES = /\bschool (avenue|ave|street|st|road|rd)\b/i
+const skipped = {}
+
 const tiles = {}
 let count = 0
 for (const row of rows) {
@@ -72,9 +82,20 @@ for (const row of rows) {
   if (status && !/^active/i.test(status)) continue
   // Administrative-only offices do not see patients.
   if (/^administrative$/i.test(get(row, 'siteType'))) continue
+  const setting = get(row, 'setting')
+  if (CLOSED_SETTINGS.test(setting)) {
+    skipped[setting] = (skipped[setting] ?? 0) + 1
+    continue
+  }
+  const name = get(row, 'name')
+  if (CLOSED_NAMES.test(name) && !STREET_NAMES.test(name)) {
+    skipped['School or student-only (by name)'] = (skipped['School or student-only (by name)'] ?? 0) + 1
+    continue
+  }
+  const locationType = get(row, 'locationType')
   const clinic = {
     id: `hrsa-${count}`,
-    name: get(row, 'name'),
+    name,
     org: get(row, 'org'),
     address: get(row, 'address'),
     city: get(row, 'city'),
@@ -85,6 +106,7 @@ for (const row of rows) {
     lat: +lat.toFixed(5),
     lon: +lon.toFixed(5),
     kind: /look-?alike/i.test(get(row, 'type')) ? 'lookalike' : 'health_center',
+    setting: /^hospital$/i.test(setting) ? 'Hospital' : /^(mobile van|seasonal)$/i.test(locationType) ? locationType : '',
     slidingScale: true,
     acceptsMedicaid: true,
     acceptsMedicare: true,
@@ -111,3 +133,4 @@ const meta = {
 }
 writeFileSync(new URL('../public/data/meta.json', import.meta.url), JSON.stringify(meta, null, 2))
 console.log(`Wrote ${count} sites in ${Object.keys(tiles).length} tiles`)
+for (const [setting, n] of Object.entries(skipped)) console.log(`  skipped ${n} ${setting} sites`)

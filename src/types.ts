@@ -15,6 +15,7 @@ export type Clinic = {
   acceptsMedicaid: boolean
   acceptsMedicare: boolean
   servesUninsured: boolean
+  setting?: string
 }
 
 export type Meta = {

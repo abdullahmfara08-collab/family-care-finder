@@ -2,16 +2,27 @@ import { describe, expect, it } from 'vitest'
 import { checkCoverage, povertyLine } from './coverage'
 import { milesBetween, tileKeysAround } from './geo'
 
+const base = { householdSize: 4, hasKids: true, pregnant: false }
+
 describe('coverage', () => {
-  it('uses the 2025 guideline for a family of four', () => {
-    expect(povertyLine(4)).toBe(32150)
-    expect(povertyLine(4, 'AK')).toBe(40190)
+  it('uses the 2026 guideline for a family of four', () => {
+    expect(povertyLine(4)).toBe(33000)
+    expect(povertyLine(1, 'AK')).toBe(19950)
   })
-  it('puts families into the right tier', () => {
-    expect(checkCoverage(30000, 4)).toMatchObject({ tier: 'medicaid', clinicDiscount: 'nominal' })
-    expect(checkCoverage(55000, 4)).toMatchObject({ tier: 'kids', clinicDiscount: 'partial' })
-    expect(checkCoverage(90000, 4)).toMatchObject({ tier: 'chip', clinicDiscount: 'none' })
-    expect(checkCoverage(150000, 4).tier).toBe('marketplace')
+  it('covers adults to 138% in expansion states', () => {
+    expect(checkCoverage({ ...base, yearlyIncome: 40000, state: 'IL' })).toMatchObject({ adults: 'medicaid', kids: 'likely', clinicDiscount: 'partial' })
+    expect(checkCoverage({ ...base, yearlyIncome: 50000, state: 'IL' }).adults).toBe('marketplace')
+  })
+  it('flags the coverage gap in non-expansion states', () => {
+    expect(checkCoverage({ ...base, yearlyIncome: 20000, state: 'TX' })).toMatchObject({ adults: 'gap', kids: 'likely', clinicDiscount: 'nominal' })
+    expect(checkCoverage({ ...base, yearlyIncome: 40000, state: 'TX' }).adults).toBe('marketplace')
+    expect(checkCoverage({ ...base, yearlyIncome: 20000, state: 'WI' }).adults).toBe('medicaid')
+  })
+  it('handles kids and pregnancy', () => {
+    expect(checkCoverage({ ...base, yearlyIncome: 90000, state: 'CA' }).kids).toBe('maybe')
+    expect(checkCoverage({ ...base, yearlyIncome: 150000, state: 'CA' }).kids).toBe('marketplace')
+    expect(checkCoverage({ ...base, hasKids: false, yearlyIncome: 30000 }).kids).toBeNull()
+    expect(checkCoverage({ ...base, pregnant: true, yearlyIncome: 60000 }).pregnant).toBe('maybe')
   })
 })
 

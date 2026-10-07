@@ -47,8 +47,16 @@ Clear Week woodland palette, Plus Jakarta Sans (self-hosted via
 @fontsource), Clear Week mark in `public/clear-week-icon.png`. Product name
 first; "made by Clear Week" only in the footer, as Focus Perch does.
 
+## Usage counts (impact)
+
+`worker/index.ts` serves the site and two endpoints: `POST /api/count` (an
+event name from `src/lib/metrics-events.ts`) and `GET /api/stats` (totals,
+shown on the `#impact` page). Counts live in a Cloudflare D1 database bound
+as `DB`, one row per day and event; nothing about visitors is stored. Setup
+steps are in `wrangler.jsonc`.
+
 ## Coverage check
 
-`src/lib/coverage.ts` uses the 2025 HHS poverty guidelines. Update them each
-January. Results are worded as "may qualify" and link to the official
+`src/lib/coverage.ts` uses the 2026 HHS poverty guidelines and each state's
+Medicaid expansion status (KFF, October 2026). Update both each January. Results are worded as "may qualify" and link to the official
 application.

@@ -3,5 +3,16 @@
   "name": "family-care-finder",
   "compatibility_date": "2026-10-06",
   "observability": { "enabled": true },
-  "assets": { "directory": "./dist", "not_found_handling": "single-page-application", "html_handling": "none" }
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "html_handling": "none",
+    "run_worker_first": ["/api/*"]
+  }
+  // Anonymous usage counts need a D1 database bound as DB. Create it once with:
+  //   npx wrangler d1 create family-care-finder
+  // add the d1_databases entry it prints (binding "DB"), then:
+  //   npx wrangler d1 execute family-care-finder --remote --file=worker/schema.sql
 }

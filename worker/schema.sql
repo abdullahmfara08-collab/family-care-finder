@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS counts (
+  day TEXT NOT NULL,
+  event TEXT NOT NULL,
+  n INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (day, event)
+);

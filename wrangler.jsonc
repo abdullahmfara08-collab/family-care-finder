@@ -10,9 +10,9 @@
     "not_found_handling": "single-page-application",
     "html_handling": "none",
     "run_worker_first": ["/api/*"]
-  }
-  // Anonymous usage counts need a D1 database bound as DB. Create it once with:
-  //   npx wrangler d1 create family-care-finder
-  // add the d1_databases entry it prints (binding "DB"), then:
-  //   npx wrangler d1 execute family-care-finder --remote --file=worker/schema.sql
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "family-care-finder", "database_id": "76743daf-a82c-4dbc-9fea-40cab8fc7857" }
+  ]
+  // Anonymous usage counts live in the D1 database above (table: worker/schema.sql).
 }

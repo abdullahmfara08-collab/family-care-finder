@@ -1,0 +1,8 @@
+{
+  "demo": true,
+  "source": "Sample data for testing. Run scripts/build-clinics.mjs with the HRSA site list to load real clinics.",
+  "sourceUrl": "https://data.hrsa.gov/data/download",
+  "lastChecked": null,
+  "count": 0,
+  "tiles": []
+}

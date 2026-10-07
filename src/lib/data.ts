@@ -1,4 +1,4 @@
-import type { Clinic, Meta, Place } from '../types'
+import type { Clinic, Meta, Networks, Place } from '../types'
 import { milesBetween, tileKeysAround } from './geo'
 
 const base = import.meta.env.BASE_URL
@@ -27,10 +27,29 @@ export type Result = Clinic & { miles: number }
 export async function clinicsNear(place: Place, maxMiles = 25): Promise<Result[]> {
   const meta = await loadMeta()
   const clinics = meta?.demo ? sampleClinics(place) : await loadTiles(place, meta)
+  const networks = await networksFor(clinics)
   return clinics
-    .map(c => ({ ...c, miles: milesBetween(place, c) }))
+    .map(c => ({ ...c, plans: networks.get(c.state)?.sites[siteKey(c.zip, c.address)], miles: milesBetween(place, c) }))
     .filter(c => c.miles <= maxMiles)
     .sort((a, b) => a.miles - b.miles)
+}
+
+// Must match siteKey in scripts/lib/address.mjs.
+export const siteKey = (zip: string, address: string) => `${zip.slice(0, 5)}|${address.trim().toLowerCase()}`
+
+// Plan networks are published per state, and only for states we've checked;
+// a missing file just means no plan labels.
+const networkCache = new Map<string, Promise<Networks | null>>()
+export function loadNetworks(state: string) {
+  if (!networkCache.has(state)) networkCache.set(state, getJson<Networks>(`networks/${state}.json`))
+  return networkCache.get(state)!
+}
+const NETWORK_STATES = new Set(['IL'])
+
+async function networksFor(clinics: Clinic[]) {
+  const states = [...new Set(clinics.map(c => c.state))].filter(s => NETWORK_STATES.has(s))
+  const loaded = await Promise.all(states.map(async s => [s, await loadNetworks(s)] as const))
+  return new Map(loaded.filter((e): e is readonly [string, Networks] => e[1] !== null))
 }
 
 async function loadTiles(place: Place, meta: Meta | null) {

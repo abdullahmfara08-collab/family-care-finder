@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { GUIDELINE_YEAR, STATES, checkCoverage, type CoverageResult } from './lib/coverage'
-import { clinicsNear, loadMeta, placeForZip, type Result } from './lib/data'
+import { clinicsNear, loadMeta, loadNetworks, placeForZip, type Result } from './lib/data'
 import { strings, type Lang } from './i18n'
-import type { Insurance, Meta, Place } from './types'
+import type { Insurance, Meta, Place, Plan } from './types'
 import { EVENTS, track } from './lib/metrics'
 
 type Screen = 'home' | 'results' | 'clinic' | 'coverage' | 'privacy' | 'terms' | 'help' | 'impact'
 const INSURANCE: Insurance[] = ['medicaid', 'chip', 'marketplace', 'medicare', 'uninsured', 'unsure']
+type PlanChoice = 'none' | Plan | 'other'
+const PLAN_CHOICES: PlanChoice[] = ['none', 'meridian', 'youthcare', 'other']
+const isPlan = (p: PlanChoice): p is Plan => p === 'meridian' || p === 'youthcare'
 const REPORT_EMAIL = import.meta.env.VITE_REPORT_EMAIL as string | undefined
 const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) || 'abdullahmfara.08@gmail.com'
 const HASH_PAGES: Screen[] = ['privacy', 'terms', 'help', 'impact']
@@ -33,6 +36,8 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>(() => pageFromHash() ?? 'home')
   const [zip, setZip] = useState<string>(() => stored('zip', ''))
   const [insurance, setInsurance] = useState<Insurance>(() => stored('insurance', 'unsure'))
+  const [plan, setPlan] = useState<PlanChoice>(() => stored('plan', 'none'))
+  const [planChecked, setPlanChecked] = useState('')
   const [place, setPlace] = useState<Place | null>(null)
   const [results, setResults] = useState<Result[]>([])
   const [selected, setSelected] = useState<Result | null>(null)
@@ -60,9 +65,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
+  const medicaidLike = insurance === 'medicaid' || insurance === 'chip'
+  const activePlan = medicaidLike && isPlan(plan) ? plan : null
+  const listedCount = activePlan ? results.filter(c => c.plans?.includes(activePlan)).length : 0
+  const anyChecked = results.some(c => c.state === 'IL')
+
   async function searchFrom(p: Place) {
     setPlace(p)
-    setResults(await clinicsNear(p))
+    const found = await clinicsNear(p)
+    const mine = activePlan
+    // Places listed in the family's plan go first; distance order is kept within each group.
+    if (mine) found.sort((a, b) => Number(!!b.plans?.includes(mine)) - Number(!!a.plans?.includes(mine)))
+    setPlanChecked((await loadNetworks('IL'))?.checked ?? '')
+    setResults(found)
     setScreen('results')
   }
 
@@ -72,6 +87,7 @@ export default function App() {
     setBusy(true)
     store('zip', zip)
     store('insurance', insurance)
+    store('plan', plan)
     track('search_zip')
     const p = await placeForZip(zip.trim())
     if (p) await searchFrom(p)
@@ -137,6 +153,14 @@ export default function App() {
                   ))}
                 </div>
               </fieldset>
+              {medicaidLike && (
+                <>
+                  <label htmlFor="plan">{t.planLabel}</label>
+                  <select id="plan" value={plan} onChange={e => setPlan(e.target.value as PlanChoice)}>
+                    {PLAN_CHOICES.map(p => <option key={p} value={p}>{t.plans[p]}</option>)}
+                  </select>
+                </>
+              )}
               {error && <p className="error" role="alert">{error}</p>}
               <button className="primary" disabled={busy || zip.length !== 5}>
                 {busy ? t.locating : t.search}
@@ -158,6 +182,14 @@ export default function App() {
             <button className="back" onClick={() => setScreen('home')}>← {t.back}</button>
             <h1>{t.resultsTitle(results.length, place.label)}</h1>
             <p className="note">{t.insuranceNote[insurance]}</p>
+            {activePlan && results.length > 0 && (
+              <p className="note plan-note">
+                {anyChecked && planChecked
+                  ? t.planSummary(listedCount, t.planNames[activePlan], planChecked)
+                  : t.planOutside(t.planNames[activePlan])}
+              </p>
+            )}
+            {medicaidLike && plan === 'other' && <p className="note">{t.planOther}</p>}
             {results.length === 0 && <p className="card">{t.noResults}</p>}
             <ul className="results">
               {results.map(c => (
@@ -167,7 +199,7 @@ export default function App() {
                     <span className="miles">{t.miles(c.miles)}</span>
                     <span className="addr">{c.address}, {c.city}</span>
                     {c.setting && t.settingLabels[c.setting] && <span className="setting">{t.settingLabels[c.setting]}</span>}
-                    <Badges c={c} t={t} insurance={insurance} />
+                    <Badges c={c} t={t} insurance={insurance} plan={activePlan} />
                   </button>
                   <Actions c={c} t={t} />
                 </li>
@@ -185,7 +217,7 @@ export default function App() {
             {selected.org && selected.org !== selected.name && <p className="quiet">{selected.org}</p>}
             <p>{selected.address}, {selected.city}, {selected.state} {selected.zip} · {t.miles(selected.miles)}</p>
             {selected.setting && t.settingLabels[selected.setting] && <p className="note">{t.settingLabels[selected.setting]}</p>}
-            <Badges c={selected} t={t} insurance={insurance} all />
+            <Badges c={selected} t={t} insurance={insurance} plan={activePlan} all />
             <Actions c={selected} t={t} />
             <ShareButton c={selected} t={t} />
             <p>{t.servicesNote}</p>
@@ -193,7 +225,7 @@ export default function App() {
             <div className="card">
               <h2>{t.callScriptTitle}</h2>
               <ul className="script">
-                {t.callScript(insurance === 'uninsured' || insurance === 'unsure' ? t.noInsuranceWord : t.insurance[insurance]).map(q => (
+                {t.callScript(activePlan ? t.planNames[activePlan] : insurance === 'uninsured' || insurance === 'unsure' ? t.noInsuranceWord : t.insurance[insurance]).map(q => (
                   <li key={q}>{q}</li>
                 ))}
               </ul>
@@ -261,8 +293,10 @@ export default function App() {
 
 type T = (typeof strings)['en']
 
-function Badges({ c, t, insurance, all }: { c: Result; t: T; insurance: Insurance; all?: boolean }) {
+function Badges({ c, t, insurance, plan, all }: { c: Result; t: T; insurance: Insurance; plan: Plan | null; all?: boolean }) {
   const wantsMedicaid = insurance === 'medicaid' || insurance === 'chip'
+  // On a clinic's own page show every plan it's listed in; in the list, only the family's plan.
+  const plans = (c.plans ?? []).filter(p => all || p === plan)
   const badges = [
     c.slidingScale && t.badges.sliding,
     c.acceptsMedicaid && (all || wantsMedicaid) && t.badges.medicaid,
@@ -271,6 +305,7 @@ function Badges({ c, t, insurance, all }: { c: Result; t: T; insurance: Insuranc
   ].filter(Boolean) as string[]
   return (
     <span className="badges">
+      {plans.map(p => <span key={p} className="badge plan">✓ {t.planBadge(t.planNames[p])}</span>)}
       {badges.map(b => <span key={b} className="badge">✓ {b}</span>)}
     </span>
   )

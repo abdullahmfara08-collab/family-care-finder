@@ -18,6 +18,21 @@ const en = {
     uninsured: "I don't have insurance",
     unsure: "I'm not sure",
   },
+  planLabel: 'Your Medicaid health plan (optional)',
+  plans: {
+    none: "I'm not sure",
+    meridian: 'Meridian (Illinois)',
+    youthcare: 'YouthCare (Illinois, youth in care)',
+    other: 'Another plan',
+  },
+  planNames: { meridian: 'Meridian Medicaid', youthcare: 'YouthCare' } as Record<string, string>,
+  planBadge: (plan: string) => `Listed in ${plan}'s network`,
+  planSummary: (n: number, plan: string, date: string) =>
+    n === 0
+      ? `None of these places show up in ${plan}'s public directory (checked ${date}). The directory can be incomplete, so call and ask.`
+      : `${n} ${n === 1 ? 'place is' : 'places are'} listed in ${plan}'s public directory (checked ${date}) and shown first. Directories can be out of date, so call to confirm.`,
+  planOther: "Right now we can check Meridian and YouthCare in Illinois. For other plans, call the clinic or the number on your insurance card.",
+  planOutside: (plan: string) => `We can only check ${plan} for Illinois clinics so far.`,
   search: 'Find care',
   coverageCta: 'Can my family get free or low-cost insurance?',
   privacy: 'No sign-up. Your answers are saved only on your phone.',
@@ -184,6 +199,21 @@ const es: typeof en = {
     uninsured: 'No tengo seguro',
     unsure: 'No estoy seguro',
   },
+  planLabel: 'Su plan de salud de Medicaid (opcional)',
+  plans: {
+    none: 'No estoy seguro',
+    meridian: 'Meridian (Illinois)',
+    youthcare: 'YouthCare (Illinois, jóvenes bajo cuidado)',
+    other: 'Otro plan',
+  },
+  planNames: { meridian: 'Meridian Medicaid', youthcare: 'YouthCare' },
+  planBadge: plan => `En la red de ${plan}`,
+  planSummary: (n, plan, date) =>
+    n === 0
+      ? `Ninguno de estos lugares aparece en el directorio público de ${plan} (revisado ${date}). El directorio puede estar incompleto; llame y pregunte.`
+      : `${n} ${n === 1 ? 'lugar aparece' : 'lugares aparecen'} en el directorio público de ${plan} (revisado ${date}) y se muestran primero. Los directorios pueden estar desactualizados; llame para confirmar.`,
+  planOther: 'Por ahora podemos revisar Meridian y YouthCare en Illinois. Para otros planes, llame a la clínica o al número de su tarjeta de seguro.',
+  planOutside: plan => `Por ahora solo podemos revisar ${plan} en clínicas de Illinois.`,
   search: 'Buscar atención',
   coverageCta: '¿Puede mi familia obtener seguro gratis o de bajo costo?',
   privacy: 'Sin registrarse. Sus respuestas se guardan solo en su teléfono.',

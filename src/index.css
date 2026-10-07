@@ -92,6 +92,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .addr { color: var(--quiet); }
 .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .badge { font-size: 0.8rem; background: var(--brand-soft); color: var(--ink); border-radius: 999px; padding: 4px 10px; }
+.badge.plan { background: var(--accent); color: var(--bg); font-weight: 700; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
 .actions > * { flex: 1 1 auto; }
 .script { padding-left: 20px; margin: 0; }

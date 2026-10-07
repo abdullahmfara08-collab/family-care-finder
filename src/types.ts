@@ -16,6 +16,8 @@ export type Clinic = {
   acceptsMedicare: boolean
   servesUninsured: boolean
   setting?: string
+  // Insurer networks this site is listed in (from public provider directories)
+  plans?: Plan[]
 }
 
 export type Meta = {
@@ -30,3 +32,15 @@ export type Meta = {
 export type Place = { lat: number; lon: number; label: string; state?: string }
 
 export type Insurance = 'medicaid' | 'chip' | 'medicare' | 'marketplace' | 'uninsured' | 'unsure'
+
+// Specific Medicaid health plans we can check against a public directory.
+export type Plan = 'meridian' | 'youthcare'
+
+export type Networks = {
+  state: string
+  checked: string
+  source: string
+  sourceUrl: string
+  plans: Plan[]
+  sites: Record<string, Plan[]>
+}

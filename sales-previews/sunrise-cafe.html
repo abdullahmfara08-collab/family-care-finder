@@ -125,6 +125,20 @@ h2{font-weight:900;font-size:clamp(30px,5.4vw,46px);line-height:1.08;letter-spac
 .dock a.hot{background:var(--gold);color:#431407}
 @media (min-width:900px){.dock{display:none}body{padding-bottom:0}}
 @media (max-width:380px){.b2{display:none}.tcall span{display:none}}
+:root{--acc:var(--deep);--acc2:var(--sun)}.gal-sec{background:#fff;border-bottom:1px solid var(--line)}
+.gal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gi{display:block;padding:0;border:0;border-radius:14px;overflow:hidden;background:var(--line);cursor:zoom-in;aspect-ratio:1/1}
+.gi.big{grid-column:1/-1;aspect-ratio:16/9}
+.gi img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.gi:hover img{transform:scale(1.03)}
+.gi:focus-visible{outline:3px solid var(--acc2);outline-offset:3px}
+@media (min-width:760px){.gal{grid-template-columns:repeat(4,1fr);gap:14px}.gi.big{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}}
+.lb{padding:0;border:0;background:transparent;max-width:min(1100px,94vw);max-height:92vh;overflow:visible}
+.lb::backdrop{background:rgba(20,10,5,.88)}
+.lb img{display:block;max-width:100%;max-height:80vh;margin:0 auto;border-radius:12px}
+.lbcap{margin:10px 0 0;text-align:center;color:#fff;font-weight:600;font-size:15px}
+.lbx{position:absolute;top:-14px;right:-6px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:var(--acc);font:800 26px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){.gi img{transition:none}}
 </style></head><body>
 <div class="pv">Preview made for Sunrise Cafe by Abdullah. Not their official site yet.</div>
 <header class="top"><a class="brand" href="#top"><span class="b1">Sunrise Cafe</span><span class="b2"><span class="en">Breakfast · Peruvian · New London</span><span class="es" lang="es">Desayunos · Comida peruana · New London</span></span></a>
@@ -142,6 +156,7 @@ h2{font-weight:900;font-size:clamp(30px,5.4vw,46px);line-height:1.08;letter-spac
 </div></section>
 <div class="band" aria-hidden="true"></div>
 <section class="facts"><ul><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="4"/><path d="M12 3v3M4.9 6.9l2 2M19.1 6.9l-2 2M2 17h20M5 21h14"/></svg><span><span class="en">Breakfast every day</span><span class="es" lang="es">Desayunos todos los días</span></span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h4v10H5zM9 4h5v10H9zM14 4h5v10h-5z"/></svg><span><span class="en">Peruvian kitchen</span><span class="es" lang="es">Cocina peruana</span></span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v5a6 6 0 0 1-12 0z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v2M12 3v2"/></svg><span><span class="en">Chicha morada &amp; fresh juices</span><span class="es" lang="es">Chicha morada y jugos</span></span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span><span class="en">Pickup &amp; delivery</span><span class="es" lang="es">Para llevar y a domicilio</span></span></li></ul></section>
+<section class="sec gal-sec" id="photos" hidden data-src="https://raw.githubusercontent.com/abdullahmfara08-collab/family-care-finder/claude/project-thread-j300pw/sales-previews/photos/sunrise/"><div class="wrap"><p class="kicker"><span class="en">Photos</span><span class="es" lang="es">Fotos</span></p><h2><span class="en">From our kitchen</span><span class="es" lang="es">De nuestra cocina</span></h2><div class="gal"></div></div></section>
 <section class="sec" id="favorites"><div class="wrap"><p class="kicker"><span class="en">House favorites</span><span class="es" lang="es">Favoritos de la casa</span></p><h2><span class="en">Start your day right</span><span class="es" lang="es">Empieza bien el día</span></h2><div class="favs"><article class="fav c1"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><ellipse cx="60" cy="58" rx="48" ry="26" fill="#fff8ee"/><path d="M28 52c0-10 14-14 22-8s10 14 0 18-22 2-22-10z" fill="#fff"/><circle cx="40" cy="53" r="7" fill="#f59e0b"/><path d="M60 50c2-10 18-12 24-4s4 16-6 16-20-2-18-12z" fill="#fff"/><circle cx="72" cy="54" r="7" fill="#f59e0b"/><rect x="30" y="66" width="22" height="8" rx="4" fill="#b91c1c"/><rect x="54" y="68" width="20" height="8" rx="4" fill="#b91c1c"/><ellipse cx="90" cy="68" rx="9" ry="6" fill="#65a30d"/><ellipse cx="90" cy="68" rx="5" ry="3.5" fill="#bef264"/></svg></div><div class="fbody"><h3><span class="en">Sunrise Breakfast</span><span class="es" lang="es">Desayuno Sunrise</span></h3><p><span class="en">Two eggs, maduro, avocado, chorizo and feta over canary beans.</span><span class="es" lang="es">Dos huevos, maduro, aguacate, chorizo y queso feta sobre frijoles canarios.</span></p><span class="fprice">$21.99</span></div></article><article class="fav c2"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><ellipse cx="60" cy="78" rx="46" ry="10" fill="#fff8ee"/><g fill="#d97706"><ellipse cx="60" cy="70" rx="34" ry="8"/><ellipse cx="60" cy="60" rx="34" ry="8"/><ellipse cx="60" cy="50" rx="34" ry="8"/></g><g fill="#fbbf24"><ellipse cx="60" cy="66" rx="34" ry="7"/><ellipse cx="60" cy="56" rx="34" ry="7"/><ellipse cx="60" cy="46" rx="34" ry="7"/></g><rect x="52" y="36" width="16" height="9" rx="2" fill="#fef3c7"/><path d="M40 46c4 10 2 18 6 22M78 46c-2 8 2 14-2 20" stroke="#92400e" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div><div class="fbody"><h3>Big Breakfast</h3><p><span class="en">Two eggs, bacon, sausage, home fries, and hot cakes or French toast.</span><span class="es" lang="es">Dos huevos, tocino, salchicha, papas caseras, y hot cakes o pan francés.</span></p><span class="fprice">$20.99</span></div></article><article class="fav c3"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><ellipse cx="60" cy="76" rx="46" ry="10" fill="#fff8ee"/><path d="M26 66V40a12 12 0 0 1 24 0v26z" fill="#d97706"/><path d="M30 64V42a8 8 0 0 1 16 0v22z" fill="#fcd34d"/><path d="M54 70V42a12 12 0 0 1 24 0v28z" fill="#d97706"/><path d="M58 68V44a8 8 0 0 1 16 0v24z" fill="#fcd34d"/><circle cx="88" cy="58" r="7" fill="#dc2626"/><circle cx="96" cy="68" r="6" fill="#dc2626"/><circle cx="84" cy="70" r="5" fill="#dc2626"/></svg></div><div class="fbody"><h3><span class="en">Stuffed French Toast</span><span class="es" lang="es">Pan francés relleno</span></h3><p><span class="en">Blueberry or strawberry with a cream cheese filling.</span><span class="es" lang="es">De arándano o fresa, relleno de queso crema.</span></p><span class="fprice">$17.99</span></div></article><article class="fav c4"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><path d="M20 52c0-16 18-24 40-24s40 8 40 24z" fill="#d97706"/><path d="M18 58h84" stroke="#fdba74" stroke-width="8" stroke-linecap="round"/><path d="M20 64h80" stroke="#92400e" stroke-width="8" stroke-linecap="round"/><path d="M24 70c12-4 24 4 36 0s24 4 36 0" stroke="#dc2626" stroke-width="4" fill="none"/><path d="M22 76h76a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8z" fill="#d97706"/></svg></div><div class="fbody"><h3>Pan con Chicharrón</h3><p><span class="en">Fried pork, sweet potato and salsa criolla on a fresh roll.</span><span class="es" lang="es">Chicharrón, camote y salsa criolla en pan.</span></p><span class="fprice">$16.99</span></div></article><article class="fav c5"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><path d="M16 48h88a44 30 0 0 1-88 0z" fill="#fff8ee"/><g fill="#fff"><rect x="34" y="38" width="12" height="10" rx="3"/><rect x="52" y="34" width="12" height="10" rx="3"/><rect x="70" y="38" width="12" height="10" rx="3"/></g><path d="M30 46c8-6 18 2 26-4M62 44c8-4 16 2 26-2" stroke="#a21caf" stroke-width="3" fill="none"/><circle cx="48" cy="50" r="3" fill="#facc15"/><circle cx="66" cy="50" r="3" fill="#facc15"/><circle cx="58" cy="48" r="3" fill="#facc15"/><path d="M92 26a10 10 0 0 1 0 20z" fill="#65a30d"/><path d="M92 30a6 6 0 0 1 0 12z" fill="#bef264"/></svg></div><div class="fbody"><h3>Ceviche</h3><p><span class="en">Fish cured in lime with onion, sweet potato and toasted corn.</span><span class="es" lang="es">Pescado en limón con cebolla, camote y cancha.</span></p><span class="fprice">$26.99</span></div></article><article class="fav c6"><div class="art"><svg viewBox="0 0 120 96" aria-hidden="true"><path d="M38 22h44l-6 62H44z" fill="#fff8ee" opacity=".9"/><path d="M41 34h38l-4 48H45z" fill="#6b21a8"/><path d="M41 34h38" stroke="#a855f7" stroke-width="3"/><circle cx="54" cy="50" r="2.5" fill="#fde68a"/><circle cx="66" cy="62" r="2" fill="#fde68a"/><path d="M64 14l-4 32" stroke="#fff8ee" stroke-width="4" stroke-linecap="round"/><path d="M80 20a10 10 0 0 1 0 20" fill="#65a30d"/></svg></div><div class="fbody"><h3>Chicha Morada</h3><p><span class="en">The classic Peruvian purple corn drink.</span><span class="es" lang="es">La clásica bebida peruana de maíz morado.</span></p><span class="fprice">$5.99</span></div></article></div></div></section>
 <section class="peru"><div class="wrap pin2"><div><p class="kicker">Cocina peruana</p><h2><span class="en">A taste of Peru on Golden Street</span><span class="es" lang="es">El sabor del Perú en Golden Street</span></h2><p><span class="en">Ceviche and leche de tigre, chaufa and tallarín saltado, anticuchos, Peruvian soups and sandwiches. Ask for your ceviche mild or spicy.</span><span class="es" lang="es">Ceviche y leche de tigre, chaufa y tallarín saltado, anticuchos, sopas y sánguches peruanos. Pide tu ceviche suave o picante.</span></p></div>
 <ul class="pdish"><li>Lomo Saltado</li><li>Ceviche</li><li>Arroz Chaufa</li><li>Papa a la Huancaína</li><li>Anticuchos</li><li>Jalea</li></ul></div></section>
@@ -157,6 +172,7 @@ h2{font-weight:900;font-size:clamp(30px,5.4vw,46px);line-height:1.08;letter-spac
 <footer class="foot"><div class="band thin" aria-hidden="true"></div><div class="wrap fin"><div><span class="fb">Sunrise Cafe</span><span>36 Golden St, New London, CT 06320 · <a href="tel:+18604373444">(860) 437-3444</a></span></div>
 <span class="credit"><span class="en">Website by</span><span class="es" lang="es">Sitio web por</span> Clear Week · (860) 514-6621</span></div></footer>
 <nav class="dock" aria-label="Quick actions"><a href="tel:+18604373444"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span><span class="en">Call</span><span class="es" lang="es">Llamar</span></span></a><a href="https://order.online/store/sunrise-cafe-1841059" target="_blank" rel="noopener" class="hot"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span><span class="en">Order</span><span class="es" lang="es">Pedir</span></span></a><a href="https://www.google.com/maps/dir/?api=1&destination=Sunrise%20Cafe%2C%2036%20Golden%20St%2C%20New%20London%2C%20CT%2006320" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><span class="en">Map</span><span class="es" lang="es">Mapa</span></span></a></nav>
+<dialog class="lb" aria-label="Photo"><button class="lbx" type="button" aria-label="Close">&times;</button><img alt=""><p class="lbcap"></p></dialog>
 <script>(function () {
   var root = document.documentElement;
   function setLang(l) { root.setAttribute('data-lang', l); root.lang = l; try { localStorage.setItem(root.getAttribute('data-key') + '-lang', l); } catch (e) {} }
@@ -202,5 +218,41 @@ h2{font-weight:900;font-size:clamp(30px,5.4vw,46px);line-height:1.08;letter-spac
   });
   var row = document.querySelector('.hours tr[data-d="' + n.d + '"]');
   if (row) row.className = 'is-today';
+})();
+(function () {
+  // Photo gallery. The photo list lives on GitHub, so new photos show up without republishing this page.
+  var sec = document.getElementById('photos'), grid = sec && sec.querySelector('.gal');
+  if (!grid || !window.fetch) return;
+  var base = sec.getAttribute('data-src');
+  var lb = document.querySelector('.lb'), lbImg = lb && lb.querySelector('img'), lbCap = lb && lb.querySelector('.lbcap');
+  function bi(el, en, es) {
+    el.textContent = '';
+    var a = document.createElement('span'); a.className = 'en'; a.textContent = en || '';
+    var b = document.createElement('span'); b.className = 'es'; b.lang = 'es'; b.textContent = es || en || '';
+    el.appendChild(a); el.appendChild(b);
+  }
+  fetch(base + 'photos.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    var list = d && d.photos;
+    if (!list || !list.length) return;
+    list.forEach(function (p, i) {
+      if (!p || !/^[\w.-]+$/.test(p.file || '')) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'gi' + (i === 0 ? ' big' : '');
+      var img = document.createElement('img');
+      img.src = base + 'sm-' + p.file; img.alt = p.en || ''; img.loading = i < 3 ? 'eager' : 'lazy'; img.decoding = 'async';
+      if (p.w && p.h) { img.width = p.w; img.height = p.h; }
+      b.appendChild(img);
+      b.addEventListener('click', function () {
+        if (!lb || !lb.showModal) { window.open(base + p.file, '_blank', 'noopener'); return; }
+        lbImg.src = base + p.file; lbImg.alt = p.en || ''; bi(lbCap, p.en, p.es); lb.showModal();
+      });
+      grid.appendChild(b);
+    });
+    if (grid.children.length) sec.hidden = false;
+  }).catch(function () {});
+  if (lb) {
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target.closest('.lbx')) lb.close(); });
+    lb.addEventListener('close', function () { lbImg.removeAttribute('src'); });
+  }
 })();
 </script></body></html>
